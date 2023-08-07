@@ -1,33 +1,28 @@
 "use client";
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import axios from "axios";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import Link from "next/link";
-import { Details } from "@mui/icons-material";
+import Loader from "../components/Loader";
+import { connect } from "react-redux";
+import { fetchPost, selectedPost } from "../../Redux/Action/blog-action";
+import Button from "@mui/material/Button";
+import { useRouter } from "next/navigation";
+import CardActions from "@mui/material/CardActions";
+
 const HtmlToReactParser = require("html-to-react").Parser;
 const htmlToReactParser = new HtmlToReactParser();
 
-const bloglist = () => {
-  const router = useRouter();
+const bloglist = (props) => {
   const [posts, setPosts] = useState([]);
+  const router = useRouter();
   useEffect(() => {
-    const apiKey = "AIzaSyDs4Zg2yH6BqMp3hUO7zP3AtuTshe4x0cU";
-    const apiUrl =
-      "https://www.googleapis.com/blogger/v3/blogs/9017420301734330187/posts?key=" +
-      apiKey +
-      "";
-    axios
-      .get(apiUrl)
-      .then((response) => {
-        setPosts(response.data.items);
-      })
-      .catch((error) => {
-        console.error("Error making GET request:", error);
-      });
+    props.fetchPost();
   }, []);
+
+  useEffect(() => {
+    setPosts(props.posts.data);
+  }, [props.posts]);
 
   useLayoutEffect(() => {
     const posts = document.querySelectorAll(".post-content");
@@ -38,6 +33,11 @@ const bloglist = () => {
       }
     });
   });
+
+  const handleDetails = (post) => {
+    props.selectedPost(post);
+    router.push(`/bloglist/${post.id}`);
+  };
 
   return (
     <div className="posts-section">
@@ -51,7 +51,6 @@ const bloglist = () => {
                     <Typography variant="h5" component="div">
                       <div>{htmlToReactParser.parse(post.title)}</div>
                     </Typography>
-
                     <Typography variant="body2">
                       <div className="post-content">
                         {htmlToReactParser.parse(post.content)}
@@ -59,19 +58,30 @@ const bloglist = () => {
                       <br />
                     </Typography>
                   </CardContent>
-                  <Link href={`/bloglist/${post.id}`} data-post={post}>
-                    Read More
-                  </Link>
+                  <CardActions>
+                    <Button size="small" onClick={() => handleDetails(post)}>
+                      Read More
+                    </Button>
+                  </CardActions>
                 </Card>
               </>
             );
           })}
         </>
       ) : (
-        <></>
+        <Loader></Loader>
       )}
     </div>
   );
 };
 
-export default bloglist;
+const mapStateToProps = (state) => {
+  return { posts: state.blog };
+};
+
+const mapDispatchToProps = {
+  fetchPost,
+  selectedPost,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(bloglist);

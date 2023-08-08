@@ -20,34 +20,8 @@ function page(props) {
 
   return (
     <div className="posts-section">
-      <Card sx={{ minWidth: 275 }} key={id}>
-        <div className="go-to-home">
-          <CardActions>
-            <Button size="small" onClick={() => gotohome()}>
-              Go to home
-            </Button>
-          </CardActions>
-        </div>
-
-        <CardContent>
-          <Typography variant="h5" component="div">
-            <div>{htmlToReactParser.parse(title)}</div>
-          </Typography>
-          <Typography variant="body2">
-            <div className="post-content">
-              {htmlToReactParser.parse(content)}
-            </div>
-            <br />
-          </Typography>
-          <div className="go-to-home">
-            <CardActions>
-              <Button size="small" onClick={() => gotohome()}>
-                Go to home
-              </Button>
-            </CardActions>
-          </div>
-        </CardContent>
-      </Card>
+      <div>{htmlToReactParser.parse(title)}</div>
+      {htmlToReactParser.parse(content)}
     </div>
   );
 }

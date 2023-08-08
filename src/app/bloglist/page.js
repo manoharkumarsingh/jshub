@@ -1,19 +1,18 @@
 "use client";
+import { styled, useTheme } from "@mui/material/styles";
+
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
 import Loader from "../components/Loader";
 import { connect } from "react-redux";
 import { fetchPost, selectedPost } from "../../Redux/Action/blog-action";
 import Button from "@mui/material/Button";
-import { useRouter } from "next/navigation";
-import CardActions from "@mui/material/CardActions";
 
+import { useRouter } from "next/navigation";
+import Typography from "@mui/material/Typography";
 const HtmlToReactParser = require("html-to-react").Parser;
 const htmlToReactParser = new HtmlToReactParser();
 
-const bloglist = (props) => {
+function PersistentDrawerLeft(props) {
   const [posts, setPosts] = useState([]);
   const router = useRouter();
   useEffect(() => {
@@ -28,7 +27,9 @@ const bloglist = (props) => {
     const posts = document.querySelectorAll(".post-content");
     posts.forEach((el) => {
       if (htmlToReactParser.parse(el.textContent).length > 500) {
-        let text = el.textContent.slice(0, 500);
+        let text = el.innerHTML.slice(0, 500);
+        // let text = el.innerHTML;
+        // console.log(text);
         el.innerHTML = text;
       }
     });
@@ -40,30 +41,24 @@ const bloglist = (props) => {
   };
 
   return (
-    <div className="posts-section">
+    <>
       {posts && posts.length > 0 ? (
         <>
           {posts.map((post) => {
             return (
               <>
-                <Card sx={{ minWidth: 275 }} key={post.id}>
-                  <CardContent>
-                    <Typography variant="h5" component="div">
-                      <div>{htmlToReactParser.parse(post.title)}</div>
-                    </Typography>
-                    <Typography variant="body2">
-                      <div className="post-content">
-                        {htmlToReactParser.parse(post.content)}
-                      </div>
-                      <br />
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small" onClick={() => handleDetails(post)}>
-                      Read More
-                    </Button>
-                  </CardActions>
-                </Card>
+                <div>{htmlToReactParser.parse(post.title)}</div>
+                <Typography paragraph>
+                  {htmlToReactParser.parse(post.content)}
+                </Typography>
+
+                <Button
+                  variant="text"
+                  size="small"
+                  onClick={() => handleDetails(post)}
+                >
+                  Read More
+                </Button>
               </>
             );
           })}
@@ -71,9 +66,9 @@ const bloglist = (props) => {
       ) : (
         <Loader></Loader>
       )}
-    </div>
+    </>
   );
-};
+}
 
 const mapStateToProps = (state) => {
   return { posts: state.blog };
@@ -84,4 +79,7 @@ const mapDispatchToProps = {
   selectedPost,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(bloglist);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PersistentDrawerLeft);

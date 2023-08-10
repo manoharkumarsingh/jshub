@@ -21,14 +21,12 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import { useRouter } from "next/navigation";
-import Avatar from "@mui/material/Avatar";
 
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-import ContactMailIcon from "@mui/icons-material/ContactMail";
+import AddIcon from "@mui/icons-material/Add";
+import HomeIcon from "@mui/icons-material/Home";
+import SchoolIcon from "@mui/icons-material/School";
 
 const drawerWidth = 240;
 const inter = Inter({ subsets: ["latin"] });
@@ -87,6 +85,7 @@ export default function RootLayout({ children }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
   const [page, setPage] = React.useState("Javascript interview preparation");
+  const [currentPage, setCurrentPage] = React.useState("/");
   const router = useRouter();
 
   const handleDrawerOpen = () => {
@@ -97,8 +96,14 @@ export default function RootLayout({ children }) {
     setOpen(false);
   };
 
+  React.useEffect(() => {
+    setPage("Javascript interview preparation");
+    router.push("/");
+  }, []);
+
   const handlePath = (data) => {
     setPage(data.path == "/" ? "Javascript interview preparation" : data.title);
+    setCurrentPage(data.path);
     router.push(data.path);
   };
 
@@ -130,7 +135,6 @@ export default function RootLayout({ children }) {
               "& .MuiDrawer-paper": {
                 width: drawerWidth,
                 boxSizing: "border-box",
-                backgroundColor: "#5FCB71",
               },
             }}
             variant="persistent"
@@ -148,22 +152,11 @@ export default function RootLayout({ children }) {
               </IconButton>
             </DrawerHeader>
             <Divider />
-            <Avatar
-              alt="Manohar Kumar Singh"
-              width="100"
-              height="100"
-              src="/mypic.jpg"
-            />
-            <Typography variant="caption" display="block" gutterBottom>
-              Experienced Software Engineer with a demonstrated history of
-              working in the information services industry. Skilled in Js,
-              Jquery, React js, Redux, Vue Js, Vuex,Node JS, Mysql, MongoDB.
-              Strong engineering professional with a Master degree focused in
-              Computer Science from National Institute of Technology Calicut.
-            </Typography>
+
             <List>
               {[
                 { title: "Home", path: "/" },
+                { title: "Create Post", path: "/create-post" },
                 { title: "Abou me", path: "/about" },
                 { title: "Contact Me", path: "/contact" },
               ].map((list, index) => (
@@ -171,10 +164,23 @@ export default function RootLayout({ children }) {
                   key={list.title}
                   disablePadding
                   onClick={() => handlePath(list)}
+                  className={
+                    list.path == currentPage ? "active-page" : "inactive-page"
+                  }
                 >
                   <ListItemButton>
                     <ListItemIcon>
-                      {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                      {index === 0 ? (
+                        <HomeIcon />
+                      ) : index === 1 ? (
+                        <AddIcon />
+                      ) : index === 2 ? (
+                        <SchoolIcon />
+                      ) : index === 3 ? (
+                        <AccountCircleIcon />
+                      ) : (
+                        <> </>
+                      )}
                     </ListItemIcon>
                     <ListItemText primary={list.title} />
                   </ListItemButton>

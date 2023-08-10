@@ -5,37 +5,75 @@
   transform: translate(-50%, -50%);
 }
 
-.left-sidebar div {
-  color: white;
+.main-quest-ans {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 }
-.left-sidebar span {
-  font-weight: bold;
-}
-.css-jzk4qw-MuiPaper-root-MuiAppBar-root {
-  background-color: #fafafa;
-  color: black;
-  box-shadow: none;
+.card-sec {
+  padding: 20px;
 }
 
-.about-me-summary {
+/* Style the button that is used to open and close the collapsible content */
+.question {
+  background-color: #555;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+/* Style the collapsible content. Note: hidden by default */
+.content {
+  padding: 0 18px;
+  overflow: hidden;
+  background-color: #f1f1f1;
+}
+
+.read-more-button {
+  text-align: right;
+}
+
+.read-more-button button,
+.right-sec button {
+  font-weight: 600;
+}
+
+.create-post-form {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  height: 80vh;
+}
+
+.input-field {
+  padding: 20px;
+  width: 500px !important;
+}
+.save-post {
+  text-align: right;
+  padding-right: 20px;
+  padding-bottom: 20px;
+}
+.page-label {
+  text-align: center;
+  padding-top: 30px;
+  padding-bottom: 20px;
+}
+
+.card-container {
+  border: 1px solid #8f8c8c;
+}
+.card-contact {
   display: flex;
   justify-content: center;
 }
 
-.about-me-content {
-  width: 78%;
-}
-
-.MuiAvatar-root {
-  width: 100%;
-  height: 100px;
-}
-.MuiAvatar-root img {
-  width: 100px;
-  height: 100px;
-}
-
-.MuiTypography-caption {
-  line-height: unset !important;
-  padding: 10px;
+.active-page {
+  background-color: #1976d2;
+  color: white;
 }

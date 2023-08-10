@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Loader from "../components/Loader";
 import { connect } from "react-redux";
-import { fetchPost, selectedPost } from "../../Redux/Action/blog-action";
+import { fetchPost, selectedPost } from "../Redux/Action/blog-action";
 import Card from "@mui/material/Card";
 
 import Textview from "../components/text-view";

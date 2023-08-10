@@ -6,7 +6,7 @@ import TextField from "@mui/material/TextField";
 import Card from "@mui/material/Card";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { createPost } from "@/Redux/Action/blog-action";
+import { createPost } from "../Redux/Action/blog-action";
 const Create = (props) => {
   const handleSave = () => {
     props.createPost();
